@@ -1,4 +1,5 @@
 /**
+ * Entry Point for program
  * @author Elliot Rees
  * @version 4 (23/02/2026)
  */
