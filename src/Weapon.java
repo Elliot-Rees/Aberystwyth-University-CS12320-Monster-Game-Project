@@ -4,6 +4,9 @@
  * @author Elliot Rees
  * @version 4 (23/02/2026)
  */
+
+//Todo: Add comments to explain code
+
 public class Weapon {
   private WeaponType weaponType;
   private int damagePoints;
@@ -56,7 +59,7 @@ public class Weapon {
   }
 
   /**
-   * Returns a readable summary of this weapon.
+   * Returns summary of this weapon.
    *
    * @return formatted weapon description
    */

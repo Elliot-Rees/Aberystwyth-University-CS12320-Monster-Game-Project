@@ -1,18 +1,18 @@
 /**
  * Represents a collectible treasure with a type, colour, and special power.
  *
- *
  * @author Elliot Rees
  * @version 4 (23/02/2026)
  */
 
+//Todo: Add comments to explain code
 public class Treasure {
   private TreasureType treasureType;
   private String treasureColour;
   private int specialPowerPoints;
 
   /**
-   * Creates a treasure instance.
+   * Creates treasure instance.
    *
    * @param treasureType category of treasure
    * @param treasureColour colour description
@@ -34,7 +34,7 @@ public class Treasure {
   }
 
   /**
-   * Returns a readable summary of this treasure.
+   * Returns summary of treasure.
    *
    * @return formatted treasure description
    */

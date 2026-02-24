@@ -1,13 +1,12 @@
 /**
  * Represents a monster with a type, appearance, combat stats, and inventory.
- * <p>
- * A monster can own up to {@link #MAX_TREASURES} treasures and optionally
- * carry a {@link Weapon}.
- * </p>
- *
+ * A monster can own up to {@link #MAX_TREASURES} (set to 5 for testing)  treasures and optionally carry a {@link Weapon}.
  * @author Elliot Rees
  * @version 4 (23/02/2026)
  */
+
+//Todo: Add comments to explain code
+
 public class Monster {
 
   private MonsterType monsterType;
@@ -15,13 +14,13 @@ public class Monster {
   private int healthPoints;
   private int powerPoints;
   private boolean isHostile;
-  private Treasure [] ownsTreasures;
+  private final Treasure [] ownsTreasures; // Set final to remove warning (Only locks array reference not contents)
   private int numTreasures;
   public static final int MAX_TREASURES = 5;
   private Weapon weapon;
 
   /**
-   * Creates a monster with core attributes.
+   * Creates monster with attributes.
    *
    * @param monsterType the category of monster
    * @param hairColour the hair colour, or {@code null} if none
@@ -46,7 +45,7 @@ public class Monster {
     }
   }
 
-  void setMonsterType(MonsterType monsterType){
+  void setMonsterType(MonsterType monsterType){ // Not used yet Ignore warning
     this.monsterType = monsterType;
   }
 
@@ -59,7 +58,7 @@ public class Monster {
    *
    * @param newHairColour new hair colour value
    */
-  public void setHair(String newHairColour){
+  public void setHair(String newHairColour){ // Not used yet Ignore warning
     this.hairColour = newHairColour;
   }
 
@@ -100,7 +99,7 @@ public class Monster {
   }
 
   /**
-   * Returns current power points.
+   * Returns power points.
    *
    * @return power points
    */
@@ -109,11 +108,11 @@ public class Monster {
   }
 
   /**
-   * Indicates whether this monster is hostile.
+   * Returns true when hostile
    *
    * @return {@code true} when hostile
    */
-  public boolean getHostility() {
+  public boolean getHostility() { // Not Used Ignore warning
     return this.isHostile;
   }
 
@@ -122,7 +121,7 @@ public class Monster {
    *
    * @param isHostility new hostility state
    */
-  public void setHostility(boolean isHostility) {
+  public void setHostility(boolean isHostility) { // Not used yet Ignore warning
     this.isHostile = isHostility;
   }
 
@@ -131,12 +130,12 @@ public class Monster {
    *
    * @return owned treasure count
    */
-  public int getNumTreasures() {
+  public int getNumTreasures() { // Not used yet Ignore warning
     return this.numTreasures;
   }
 
   /**
-   * Returns the backing array of owned treasures.
+   * Returns array of owned treasures.
    *
    * @return treasure array
    */
@@ -145,11 +144,11 @@ public class Monster {
   }
 
   /**
-   * Sums special power points across all non-null owned treasures.
+   * Sums special power points across all non-null treasures.
    *
    * @return total special power points from treasure
    */
-  public int getTotalSpecialPoints() {
+  public int getTotalSpecialPoints() { // Not used yet Ignore warning
     Treasure [] treasures = getOwnedTreasures();
     int totalHealthPoints = 0;
     for(Treasure t:treasures) {
@@ -165,7 +164,7 @@ public class Monster {
    *
    * @return weapon, or {@code null} if none equipped
    */
-  public Weapon getWeapon() {
+  public Weapon getWeapon() { // Not used yet Ignore warning
     return this.weapon;
   }
 
@@ -174,7 +173,7 @@ public class Monster {
    *
    * @param newWeapon weapon to equip
    */
-  public void setWeapon(Weapon newWeapon) {
+  public void setWeapon(Weapon newWeapon) { // Not used yet Ignore warning
     this.weapon = newWeapon;
     setPowerPoints(weapon == null ? 0 : weapon.getDamagePoints());
   }
@@ -186,7 +185,7 @@ public class Monster {
    * @param player the player to attack
    * @return {@code true} if the player is defeated after the attack
    */
-  public boolean attack(Player player) {
+  public boolean attack(Player player) { // Output not used yet ignore warning
     if (player == null || this.healthPoints <= 0) {
       return false;
     }

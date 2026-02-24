@@ -1,19 +1,20 @@
 /**
  * Entry point for the combined dungeon and battle demo.
- * <p>
- * First displays the dungeon room graph, then runs the battle simulation.
- * </p>
- *
+ * First displays dungeon room graph, then runs the battle simulation.
  * @author Elliot Rees
  * @version 6 (24/02/2026)
  */
+
+// Todo: Add comments explaining code
+
 public class Application {
       /**
        * Starts the program.
-       *
-       * @param args command-line arguments (unused)
+       * public keyword redundant hence removed
+       * @param args command-line arguments (unused for now. Throws error when removed ¯\_(ツ)_/¯ Ignore error)
        */
-      public static void main(String[] args) {
+
+      static void main(String[] args) {
             displayRoomGraph();
             System.out.println();
             runBattleSimulation();
@@ -40,7 +41,7 @@ public class Application {
       }
 
       /**
-       * Runs a turn-based battle between a player and a monster.
+       * Runs a battle between a player and a monster.
        */
       private static void runBattleSimulation() {
             Player hero = new Player("Hero", 20, 6);

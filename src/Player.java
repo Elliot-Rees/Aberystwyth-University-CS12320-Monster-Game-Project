@@ -3,11 +3,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A player's health increases when they defeat a monster and loot treasure
+ * Player's health increases when they defeat a monster and loot treasure
  *
  * @author Elliot Rees
  * @version 1 (23/02/2026)
  */
+
+//Todo: Add comments to explain code
 public class Player {
   private String name;
   private int healthPoints;
@@ -42,7 +44,7 @@ public class Player {
    *
    * @param name new player name
    */
-  public void setName(String name) {
+  public void setName(String name) { // Not used yet Ignore warning
     this.name = name;
   }
 
@@ -78,7 +80,7 @@ public class Player {
    *
    * @param powerPoints new power value
    */
-  public void setPowerPoints(int powerPoints) {
+  public void setPowerPoints(int powerPoints) { // Not used yet Ignore warning
     this.powerPoints = powerPoints;
   }
 
@@ -87,13 +89,13 @@ public class Player {
    *
    * @return read-only treasure list
    */
-  public List<Treasure> getTreasures() {
+  public List<Treasure> getTreasures() { // Not used yet Ignore warning
     return Collections.unmodifiableList(this.treasures);
   }
 
   /**
-   * Attacks the supplied monster. If the monster is defeated, the player
-   * loots all monster treasures and gains health from each looted item.
+   * Attacks the monster. If the monster is defeated, the player
+   * loots all monster treasures and gains health from looted item(s).
    *
    * @param monster monster to attack
    * @return {@code true} if the monster is defeated after this attack
@@ -125,11 +127,11 @@ public class Player {
   }
 
   /**
-   * Returns a textual summary of the player state.
+   * Returns a summary of the player state.
    *
    * @return formatted player details
    */
-  @Override
+  @Override // Provides own version of method that already exists in parent object
   public String toString() {
     return "Player " + this.name
         + " has " + this.healthPoints + " health points, "
@@ -138,7 +140,7 @@ public class Player {
   }
 
   /**
-   * Loots all treasures from a defeated monster.
+   * Loots all treasure from a defeated monster.
    *
    * @param monster defeated monster
    */
