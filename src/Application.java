@@ -1,16 +1,48 @@
 /**
- * Entry Point for program
+ * Entry point for the combined dungeon and battle demo.
+ * <p>
+ * First displays the dungeon room graph, then runs the battle simulation.
+ * </p>
+ *
  * @author Elliot Rees
- * @version 4 (23/02/2026)
+ * @version 6 (24/02/2026)
  */
-
 public class Application {
       /**
-       * Starts the battle simulation and prints a narrated battle log.
+       * Starts the program.
        *
        * @param args command-line arguments (unused)
        */
-      public static void main(String[] args){
+      public static void main(String[] args) {
+            displayRoomGraph();
+            System.out.println();
+            runBattleSimulation();
+      }
+
+      /**
+       * Displays all rooms and their directional links, plus current room.
+       */
+      private static void displayRoomGraph() {
+            Dungeon dungeon = new Dungeon();
+
+            System.out.println("== DUNGEON ROOMS ==");
+            for (Room room : dungeon.getAllRooms()) {
+                  System.out.println(room);
+            }
+
+            System.out.println();
+            Room current = dungeon.getCurrentRoom();
+            if (current != null) {
+                  System.out.println("Current room: " + current.getName());
+            } else {
+                  System.out.println("Current room: None");
+            }
+      }
+
+      /**
+       * Runs a turn-based battle between a player and a monster.
+       */
+      private static void runBattleSimulation() {
             Player hero = new Player("Hero", 20, 6);
             Weapon sword = new Weapon(WeaponType.SWORD, 6);
 
@@ -29,7 +61,7 @@ public class Application {
             System.out.println(
                     "The scary monster is of type " + goblin.getMonsterType()
                             + " with " + goblin.getHair() + " hair and "
-                            + goblin.getHealthPoints() + " halth points."
+                            + goblin.getHealthPoints() + " health points."
             );
             System.out.println();
 
