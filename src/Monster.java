@@ -1,239 +1,165 @@
 /**
- * Represents a monster with a type, appearance, combat stats, and inventory.
- * A monster can own up to {@link #MAX_TREASURES} (set to 5 for testing)  treasures and optionally carry a {@link Weapon}.
- * @author Elliot Rees
- * @version 4 (23/02/2026)
+ * Represents a monster with type, combat stats, and treasure inventory.
  */
-
-//Todo: Add comments to explain code
-
 public class Monster {
+    public static final int MAX_TREASURES = 5;
+    private static final int MAX_EXTRA_TREASURES = 4;
 
-  private MonsterType monsterType;
-  private String hairColour;
-  private int healthPoints;
-  private int powerPoints;
-  private boolean isHostile;
-  private final Treasure [] ownsTreasures; // Set final to remove warning (Only locks array reference not contents)
-  private int numTreasures;
-  public static final int MAX_TREASURES = 5;
-  private Weapon weapon;
+    private MonsterType monsterType;
+    private String hairColour;
+    private int healthPoints;
+    private int powerPoints;
+    private boolean isHostile;
 
-  /**
-   * Creates monster with attributes.
-   *
-   * @param monsterType the category of monster
-   * @param hairColour the hair colour, or {@code null} if none
-   * @param isHostile whether the monster is hostile
-   */
-  public Monster(MonsterType monsterType, String hairColour, boolean isHostile){
-    this.monsterType = monsterType;
-    this.hairColour = hairColour;
-    this.isHostile = isHostile;
-    this.ownsTreasures = new Treasure[MAX_TREASURES];
-  }
+    private final Treasure[] ownsTreasures;
+    private int numTreasures;
 
-  /**
-   * Adds a treasure to the inventory if capacity allows.
-   *
-   * @param treasure the treasure to add
-   */
-  public void addTreasure(Treasure treasure){
-    if(numTreasures < MAX_TREASURES) {
-      this.ownsTreasures[numTreasures] = treasure;
-      numTreasures++;
+    private final Treasure[] extraTreasures = new Treasure[MAX_EXTRA_TREASURES];
+    private int numExtraTreasures = 0;
+
+    private Weapon weapon;
+
+    public Monster(MonsterType monsterType, String hairColour, boolean isHostile) {
+        this(monsterType, hairColour, isHostile, null);
     }
-  }
 
-  void setMonsterType(MonsterType monsterType){ // Not used yet Ignore warning
-    this.monsterType = monsterType;
-  }
+    public Monster(MonsterType monsterType, String hairColour, boolean isHostile, Treasure treasure) {
+        this.monsterType = monsterType;
+        this.hairColour = hairColour;
+        this.isHostile = isHostile;
+        this.ownsTreasures = new Treasure[MAX_TREASURES];
+        this.numTreasures = 0;
 
-  MonsterType getMonsterType(){
-    return this.monsterType;
-  }
-
-  /**
-   * Updates the monster's hair colour.
-   *
-   * @param newHairColour new hair colour value
-   */
-  public void setHair(String newHairColour){ // Not used yet Ignore warning
-    this.hairColour = newHairColour;
-  }
-
-  /**
-   * Returns the monster's hair colour.
-   *
-   * @return hair colour, or {@code null} if not set
-   */
-  public String getHair(){
-    return this.hairColour;
-  }
-
-  /**
-   * Sets current health points.
-   *
-   * @param newHealthPoints new health value
-   */
-  public void setHealthPoints(int newHealthPoints){
-    this.healthPoints = newHealthPoints;
-  }
-
-  /**
-   * Returns current health points.
-   *
-   * @return health points
-   */
-  public int getHealthPoints(){
-    return this.healthPoints;
-  }
-
-  /**
-   * Sets current power points.
-   *
-   * @param newPowerPoints new power value
-   */
-  public void setPowerPoints(int newPowerPoints){
-    this.powerPoints = newPowerPoints;
-  }
-
-  /**
-   * Returns power points.
-   *
-   * @return power points
-   */
-  public int getPowerPoints(){
-    return this.powerPoints;
-  }
-
-  /**
-   * Returns true when hostile
-   *
-   * @return {@code true} when hostile
-   */
-  public boolean getHostility() { // Not Used Ignore warning
-    return this.isHostile;
-  }
-
-  /**
-   * Sets hostility status.
-   *
-   * @param isHostility new hostility state
-   */
-  public void setHostility(boolean isHostility) { // Not used yet Ignore warning
-    this.isHostile = isHostility;
-  }
-
-  /**
-   * Returns the number of treasures currently owned.
-   *
-   * @return owned treasure count
-   */
-  public int getNumTreasures() { // Not used yet Ignore warning
-    return this.numTreasures;
-  }
-
-  /**
-   * Returns array of owned treasures.
-   *
-   * @return treasure array
-   */
-  public Treasure[] getOwnedTreasures() {
-    return this.ownsTreasures;
-  }
-
-  /**
-   * Sums special power points across all non-null treasures.
-   *
-   * @return total special power points from treasure
-   */
-  public int getTotalSpecialPoints() { // Not used yet Ignore warning
-    Treasure [] treasures = getOwnedTreasures();
-    int totalHealthPoints = 0;
-    for(Treasure t:treasures) {
-      if (t != null) {
-        totalHealthPoints = totalHealthPoints + t.getSpecialPowerPoints();
-      }
+        if (treasure != null) {
+            addTreasure(treasure);
+        }
     }
-    return totalHealthPoints;
-  }
 
-  /**
-   * Returns the equipped weapon.
-   *
-   * @return weapon, or {@code null} if none equipped
-   */
-  public Weapon getWeapon() { // Not used yet Ignore warning
-    return this.weapon;
-  }
-
-  /**
-   * Equips a weapon and synchronizes power points with its damage.
-   *
-   * @param newWeapon weapon to equip
-   */
-  public void setWeapon(Weapon newWeapon) { // Not used yet Ignore warning
-    this.weapon = newWeapon;
-    setPowerPoints(weapon == null ? 0 : weapon.getDamagePoints());
-  }
-
-  /**
-   * Attacks the supplied player by reducing their health points by this
-   * monster's current power points.
-   *
-   * @param player the player to attack
-   * @return {@code true} if the player is defeated after the attack
-   */
-  public boolean attack(Player player) { // Output not used yet ignore warning
-    if (player == null || this.healthPoints <= 0) {
-      return false;
+    public void addTreasure(Treasure treasure) {
+        if (treasure == null || numTreasures >= MAX_TREASURES) {
+            return;
+        }
+        this.ownsTreasures[numTreasures] = treasure;
+        numTreasures++;
     }
-    int remainingHealth = player.getHealthPoints() - this.powerPoints;
-    player.setHealthPoints(Math.max(remainingHealth, 0));
-    return player.getHealthPoints() == 0;
-  }
 
-  /**
-   * Drops all currently owned treasures and clears this monster's inventory.
-   *
-   * @return an array containing all dropped treasures
-   */
-  public Treasure[] dropAllTreasures() {
-    Treasure[] droppedTreasures = new Treasure[this.numTreasures];
-    for (int i = 0; i < this.numTreasures; i++) {
-      droppedTreasures[i] = this.ownsTreasures[i];
-      this.ownsTreasures[i] = null;
+    public void collectExtraTreasure(Treasure treasure) {
+        if (treasure == null || numExtraTreasures >= MAX_EXTRA_TREASURES) {
+            return;
+        }
+        this.extraTreasures[numExtraTreasures] = treasure;
+        numExtraTreasures++;
     }
-    this.numTreasures = 0;
-    return droppedTreasures;
-  }
 
-  /**
-   * Builds a readable summary of this monster and its possessions.
-   *
-   * @return formatted monster description
-   */
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("The monster of type ");
-    sb.append(monsterType);
-    sb.append(" with ").append(this.hairColour == null ? "no" : this.hairColour);
-    sb.append(" hair and ").append(this.isHostile ? "very hostile" : "very friendly");
-    sb.append(" with ").append(this.healthPoints).append(" health points");
-    sb.append(" and ").append(this.powerPoints).append(" power points.");
-    sb.append("\nIt has ").append(this.numTreasures).append("/").append(MAX_TREASURES).append(" treasures.\n");
-
-    if (numTreasures > 0) {
-      for (int i = 0; i < numTreasures; i++) {
-        Treasure t = this.ownsTreasures[i];
-        sb.append("Treasure ").append(i+1).append(":");
-        sb.append(t == null ? "No treasure " : t.toString());
-        if (i < numTreasures - 1) sb.append("\n");
-      }
+    public void collectLootFromPlayer(Player player) {
+        if (player == null) {
+            return;
+        }
+        Treasure[] dropped = player.dropAllTreasures();
+        for (Treasure treasure : dropped) {
+            collectExtraTreasure(treasure);
+        }
     }
-    sb.append("\nIt also has a ").append(this.weapon == null ? "no weapon." : this.weapon.toString());
-    return sb.toString();
-  }
+
+    void setMonsterType(MonsterType monsterType) {
+        this.monsterType = monsterType;
+    }
+
+    MonsterType getMonsterType() {
+        return this.monsterType;
+    }
+
+    public void setHair(String newHairColour) {
+        this.hairColour = newHairColour;
+    }
+
+    public String getHair() {
+        return this.hairColour;
+    }
+
+    public void setHealthPoints(int newHealthPoints) {
+        this.healthPoints = Math.max(newHealthPoints, 0);
+    }
+
+    public int getHealthPoints() {
+        return this.healthPoints;
+    }
+
+    public void setPowerPoints(int newPowerPoints) {
+        this.powerPoints = Math.max(newPowerPoints, 0);
+    }
+
+    public int getPowerPoints() {
+        return this.powerPoints;
+    }
+
+    public boolean getHostility() {
+        return this.isHostile;
+    }
+
+    public void setHostility(boolean isHostility) {
+        this.isHostile = isHostility;
+    }
+
+    public int getNumTreasures() {
+        return this.numTreasures;
+    }
+
+    public Treasure[] getOwnedTreasures() {
+        Treasure[] copy = new Treasure[this.numTreasures];
+        for (int i = 0; i < this.numTreasures; i++) {
+            copy[i] = this.ownsTreasures[i];
+        }
+        return copy;
+    }
+
+    public int getTotalSpecialPoints() {
+        int totalHealthPoints = 0;
+        for (int i = 0; i < this.numTreasures; i++) {
+            Treasure t = this.ownsTreasures[i];
+            if (t != null) {
+                totalHealthPoints = totalHealthPoints + t.getSpecialPowerPoints();
+            }
+        }
+        return totalHealthPoints;
+    }
+
+    public Weapon getWeapon() {
+        return this.weapon;
+    }
+
+    public void setWeapon(Weapon newWeapon) {
+        this.weapon = newWeapon;
+        setPowerPoints(weapon == null ? 0 : weapon.getDamagePoints());
+    }
+
+    public boolean attack(Player player) {
+        if (player == null || this.healthPoints <= 0) {
+            return false;
+        }
+        int remainingHealth = player.getHealthPoints() - this.powerPoints;
+        player.setHealthPoints(Math.max(remainingHealth, 0));
+        return player.getHealthPoints() == 0;
+    }
+
+    public Treasure[] dropAllTreasures() {
+        Treasure[] droppedTreasures = new Treasure[this.numTreasures];
+        for (int i = 0; i < this.numTreasures; i++) {
+            droppedTreasures[i] = this.ownsTreasures[i];
+            this.ownsTreasures[i] = null;
+        }
+        this.numTreasures = 0;
+        return droppedTreasures;
+    }
+
+    @Override
+    public String toString() {
+        return this.monsterType + " (hair: " + (this.hairColour == null ? "none" : this.hairColour)
+                + ", " + (this.isHostile ? "hostile" : "friendly")
+                + ", HP: " + this.healthPoints
+                + ", PP: " + this.powerPoints
+                + ", treasures: " + this.numTreasures
+                + ", extra treasures: " + this.numExtraTreasures
+                + ")";
+    }
 }

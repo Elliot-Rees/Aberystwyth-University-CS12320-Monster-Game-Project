@@ -1,87 +1,117 @@
 /**
- * @author Elliot Rees
- * @version 1 (24/02/2026)
+ * Represents a room in the dungeon with directional exits and up to two monsters.
  */
-
-//Todo: Add comments to explain code
 public class Room {
-      private String name; // Ignore Final Warning
-      private Room north;
-      private Room south;
-      private Room east;
-      private Room west;
+    public static final int MAX_MONSTERS = 2;
 
-      /**
-       * Creates a room with display name.
-       *
-       * @param name room name
-       */
-      public Room(String name) {
-            this.name = name;
-      }
+    private final String name;
+    private Room north;
+    private Room south;
+    private Room east;
+    private Room west;
 
-      /**
-       * Returns the room name.
-       *
-       * @return room name
-       */
-      public String getName() {
-            return this.name;
-      }
+    private final Monster[] monsters;
+    private int numMonsters;
 
-  /**
-       * Sets the room connected to the north.
-       *
-       * @param north room to the north
-       */
-      public void setNorth(Room north) {
-            this.north = north;
-      }
+    public Room(String name) {
+        this.name = name;
+        this.monsters = new Monster[MAX_MONSTERS];
+        this.numMonsters = 0;
+    }
 
-  /**
-       * Sets the room connected to the south.
-       *
-       * @param south room to the south
-       */
-      public void setSouth(Room south) {
-            this.south = south;
-      }
+    public String getName() {
+        return this.name;
+    }
 
-  /**
-       * Sets the room connected to the east.
-       *
-       * @param east room to the east
-       */
-      public void setEast(Room east) {
-            this.east = east;
-      }
+    public Room getNorth() {
+        return north;
+    }
 
-  /**
-       * Sets the room connected to the west.
-       *
-       * @param west room to the west
-       */
-      public void setWest(Room west) {
-            this.west = west;
-      }
+    public Room getSouth() {
+        return south;
+    }
 
-  /**
-       * Returns a summary of room and all directional links.
-       *
-       * @return room summary
-       */
-      @Override
-      public String toString() {
-            return "Room '" + this.name + "' -> " + "North: " + nameOrNone(this.north) + ", "+ "South: " + nameOrNone(this.south) + ", "+ "East: " + nameOrNone(this.east) + ", "+ "West: " + nameOrNone(this.west);
-      }
+    public Room getEast() {
+        return east;
+    }
 
-      /**
-       * Returns the target room name or "None" for a missing connection.
-       *
-       * @param room neighboring room reference
-       * @return room name or {@code "None"}
-       */
-      private String nameOrNone(Room room) {
-            return room == null ? "None" : room.getName();
-      }
+    public Room getWest() {
+        return west;
+    }
+
+    public void setNorth(Room north) {
+        this.north = north;
+    }
+
+    public void setSouth(Room south) {
+        this.south = south;
+    }
+
+    public void setEast(Room east) {
+        this.east = east;
+    }
+
+    public void setWest(Room west) {
+        this.west = west;
+    }
+
+    public boolean addMonster(Monster monster) {
+        if (monster == null || numMonsters >= MAX_MONSTERS) {
+            return false;
+        }
+        this.monsters[numMonsters] = monster;
+        numMonsters++;
+        return true;
+    }
+
+    public Monster[] getMonsters() {
+        Monster[] copy = new Monster[numMonsters];
+        for (int i = 0; i < numMonsters; i++) {
+            copy[i] = monsters[i];
+        }
+        return copy;
+    }
+
+    public int getNumMonsters() {
+        return numMonsters;
+    }
+
+    public int getNumHostileMonstersAlive() {
+        int total = 0;
+        for (int i = 0; i < numMonsters; i++) {
+            Monster monster = monsters[i];
+            if (monster != null && monster.getHostility() && monster.getHealthPoints() > 0) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    public void removeDefeatedMonsters() {
+        int write = 0;
+        for (int i = 0; i < numMonsters; i++) {
+            Monster monster = monsters[i];
+            if (monster != null && monster.getHealthPoints() > 0) {
+                monsters[write] = monster;
+                write++;
+            }
+        }
+
+        for (int i = write; i < numMonsters; i++) {
+            monsters[i] = null;
+        }
+        numMonsters = write;
+    }
+
+    @Override
+    public String toString() {
+        return "Room '" + this.name + "' -> North: " + nameOrNone(this.north)
+                + ", South: " + nameOrNone(this.south)
+                + ", East: " + nameOrNone(this.east)
+                + ", West: " + nameOrNone(this.west);
+    }
+
+    private String nameOrNone(Room room) {
+        return room == null ? "None" : room.getName();
+    }
 }
